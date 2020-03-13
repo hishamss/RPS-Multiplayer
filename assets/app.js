@@ -25,6 +25,7 @@ $(document).ready(function() {
     if (Counter < 2) {
       AddUser();
       $(".selections").show();
+      WhoIsConnected();
     } else {
       alert("Soory, Only 2 users allowed to play!");
     }
@@ -53,12 +54,38 @@ $(document).ready(function() {
   }
 
   $(".selection").on("click", function() {
-    console.log($(this).attr("data-value"));
     var Selection = $(this).attr("data-value");
-    console.log(con.key);
     // this will add key without overiding the exesting keys
     database.ref("/connections/" + con.key).update({
       selection: Selection
     });
   });
+
+  function WhoIsConnected() {
+    database.ref("/connections").once("value", function(data) {
+      var users = data.val();
+      for (keys in users) {
+        if (keys !== con.key) {
+          console.log("someone else is connected");
+          break;
+        } else {
+          console.log("You the first one!");
+          break;
+        }
+      }
+    });
+  }
+
+  // // check if I am not connected
+  // if (con === undefined) {
+  //   for (keys in users) {
+  //     console.log("keys1:" + keys);
+  //   }
+  // } else {
+  //   for (keys in users) {
+  //     if (keys !== con.key) {
+  //       console.log("keys2:" + keys);
+  //     }
+  //   }
+  // }
 });
