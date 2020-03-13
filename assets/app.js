@@ -92,6 +92,10 @@ $(document).ready(function() {
       for (keys in users) {
         if (keys !== con.key) {
           $(".Enemy > .card-header").text(users[keys].username);
+          break;
+          // once the enemy close his borwser, it will clear his card
+        } else {
+          $(".Enemy > .card-header").text("");
         }
       }
     }
@@ -101,6 +105,10 @@ $(document).ready(function() {
     for (keys in Select) {
       if (keys !== Username) {
         $(".Enemy > .card-body").text(Select[keys]);
+        break;
+        // once the enemy close his borwser, it will clear his card
+      } else {
+        $(".Enemy > .card-body").text("");
       }
     }
   });
