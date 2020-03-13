@@ -13,6 +13,7 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 var con;
 var Counter = 0;
+var WhoIsConnectedisCalled = false;
 $(document).ready(function() {
   $(".selections").hide();
   // get how many users are connected
@@ -62,30 +63,33 @@ $(document).ready(function() {
   });
 
   function WhoIsConnected() {
+    WhoIsConnectedisCalled = true;
     database.ref("/connections").once("value", function(data) {
       var users = data.val();
+
       for (keys in users) {
         if (keys !== con.key) {
-          console.log("someone else is connected");
+          // display the name of the other players in case is connected
+          $(".message").text(users[keys].username + " is connected");
           break;
         } else {
-          console.log("You the first one!");
+          $(".message").text("You the first one!");
+
           break;
         }
       }
     });
   }
-
-  // // check if I am not connected
-  // if (con === undefined) {
-  //   for (keys in users) {
-  //     console.log("keys1:" + keys);
-  //   }
-  // } else {
-  //   for (keys in users) {
-  //     if (keys !== con.key) {
-  //       console.log("keys2:" + keys);
-  //     }
-  //   }
-  // }
+  // this will detect if user joins the game while u r connected
+  database.ref("/connections").on("value", function(snapshot) {
+    if (WhoIsConnectedisCalled) {
+      var users = snapshot.val();
+      console.log(users);
+      for (keys in users) {
+        if (keys !== con.key) {
+          $(".message").text(users[keys].username + " just joined");
+        }
+      }
+    }
+  });
 });
