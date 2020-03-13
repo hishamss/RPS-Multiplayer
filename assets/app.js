@@ -32,7 +32,7 @@ $(document).ready(function() {
     }
   });
   function AddUser() {
-    var Username = prompt("Please enter your username: ");
+    Username = prompt("Please enter your username: ");
     // connectionsRef references a specific location in our database.
     // All of our connections will be stored in this directory.
     var connectionsRef = database.ref("/connections");
@@ -56,10 +56,10 @@ $(document).ready(function() {
 
   $(".selection").on("click", function() {
     var Selection = $(this).attr("data-value");
+    var updates = {};
+    updates[Username] = Selection;
     // this will add key without overiding the exesting keys
-    database.ref("/connections/" + con.key).update({
-      selection: Selection
-    });
+    database.ref("/selections").update(updates);
   });
 
   function WhoIsConnected() {
@@ -91,5 +91,20 @@ $(document).ready(function() {
         }
       }
     }
+  });
+  database.ref("/selections").on("value", function(snapshot) {
+    var Select = snapshot.val();
+    for (keys in Select) {
+      if (keys !== Username) {
+        $(".select").text(keys + " Selected " + Select[keys]);
+      }
+    }
+  });
+
+  $(window).on("unload", function() {
+    database
+      .ref("/selections")
+      .child(Username)
+      .remove();
   });
 });
