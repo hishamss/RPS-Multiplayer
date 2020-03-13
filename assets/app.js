@@ -11,16 +11,20 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
+var con;
 var Counter = 0;
 $(document).ready(function() {
+  $(".selections").hide();
+  // get how many users are connected
   database.ref("/connections").once("value", function(data) {
     var users = data.val();
     for (key in users) {
       Counter++;
     }
-    console.log(Counter);
+    // only 2 users allowed to connect
     if (Counter < 2) {
       AddUser();
+      $(".selections").show();
     } else {
       alert("Soory, Only 2 users allowed to play!");
     }
@@ -39,44 +43,22 @@ $(document).ready(function() {
       // If they are connected..
       if (snap.val()) {
         // Add user to the connections list.
-        var con = connectionsRef.push(Username);
+        con = connectionsRef.push({
+          username: Username
+        });
         // Remove user from the connection list when they disconnect.
         con.onDisconnect().remove();
       }
     });
   }
-  // //   to check how many users are connected
-  // database.ref().once("value", function(data) {
-  //   Counter = data.val().counter;
-  //   //   console.log(Counter);
 
-  //   if (Counter < 3) {
-  //     AddUser();
-  //   } else {
-  //     alert("Only 2 users can play!!");
-  //   }
-
-  //   //database.ref("/connections").on("child_added", function(childsnapshot) {
-  //   // if (childsnapshot.val().username !== username) {
-  //   //   console.log(childsnapshot.val().username);
-  //   // }
-  // });
-
-  // //   database.ref().on("value", function(snapshot) {
-  // //     counter = snapshot.val().counter;
-  // //     console.log(counter);
-  // //   });
-  // $(window).on("unload", function() {
-  //   Counter--;
-  //   database.ref().set({
-  //     counter: Counter
-  //   });
-  // });
-
-  // function AddUser() {
-  //   Counter++;
-  //   database.ref("/" + Counter).set({
-  //     name: Username
-  //   });
-  // }
+  $(".selection").on("click", function() {
+    console.log($(this).attr("data-value"));
+    var Selection = $(this).attr("data-value");
+    console.log(con.key);
+    // this will add key without overiding the exesting keys
+    database.ref("/connections/" + con.key).update({
+      selection: Selection
+    });
+  });
 });
