@@ -16,6 +16,7 @@ var Counter = 0;
 var WhoIsConnectedisCalled = false;
 $(document).ready(function() {
   $(".selections").hide();
+  $(".cards").hide();
   // get how many users are connected
   database.ref("/connections").once("value", function(data) {
     var users = data.val();
@@ -25,7 +26,9 @@ $(document).ready(function() {
     // only 2 users allowed to connect
     if (Counter < 2) {
       AddUser();
+      $(".Me > .card-header").text(Username);
       $(".selections").show();
+      $(".cards").show();
       WhoIsConnected();
     } else {
       alert("Soory, Only 2 users allowed to play!");
@@ -60,6 +63,7 @@ $(document).ready(function() {
     updates[Username] = Selection;
     // this will add key without overiding the exesting keys
     database.ref("/selections").update(updates);
+    $(".Me > .card-body").text(Selection);
   });
 
   function WhoIsConnected() {
@@ -70,13 +74,13 @@ $(document).ready(function() {
       for (keys in users) {
         if (keys !== con.key) {
           // display the name of the other players in case is connected
-          $(".message").text(users[keys].username + " is connected");
-          break;
-        } else {
-          $(".message").text("You the first one!");
-
-          break;
+          $(".Enemy > .card-header").text(users[keys].username);
         }
+        // else {
+        //   $(".message").text("You the first one!");
+
+        //   break;
+        // }
       }
     });
   }
@@ -87,7 +91,7 @@ $(document).ready(function() {
       console.log(users);
       for (keys in users) {
         if (keys !== con.key) {
-          $(".message").text(users[keys].username + " just joined");
+          $(".Enemy > .card-header").text(users[keys].username);
         }
       }
     }
@@ -96,7 +100,7 @@ $(document).ready(function() {
     var Select = snapshot.val();
     for (keys in Select) {
       if (keys !== Username) {
-        $(".select").text(keys + " Selected " + Select[keys]);
+        $(".Enemy > .card-body").text(Select[keys]);
       }
     }
   });
