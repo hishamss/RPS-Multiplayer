@@ -14,6 +14,12 @@ var database = firebase.database();
 var con;
 var Counter = 0;
 var WhoIsConnectedisCalled = false;
+var IsEnemySelected = false;
+var IsMySelected = false;
+var EnmeyUsername = "";
+var EnemySelection = "";
+var Username;
+var select = {};
 $(document).ready(function() {
   $(".selections").hide();
   $(".cards").hide();
@@ -27,11 +33,11 @@ $(document).ready(function() {
     if (Counter < 2) {
       AddUser();
       $(".Me > .card-header").text(Username);
-      $(".selections").show();
+
       $(".cards").show();
       WhoIsConnected();
     } else {
-      alert("Soory, Only 2 users allowed to play!");
+      alert("Sorry, Only 2 users allowed to play!");
     }
   });
   function AddUser() {
@@ -58,12 +64,15 @@ $(document).ready(function() {
   }
 
   $(".selection").on("click", function() {
-    var Selection = $(this).attr("data-value");
-    var updates = {};
-    updates[Username] = Selection;
+    Selection = $(this).attr("data-value");
+
     // this will add key without overiding the exesting keys
-    database.ref("/selections").update(updates);
+    database.ref("/connections/" + con.key).update({
+      selection: Selection
+    });
     $(".Me > .card-body").text(Selection);
+    // IsMySelected = true;
+    // console.log("You have selected, call the function");
   });
 
   function WhoIsConnected() {
@@ -75,6 +84,7 @@ $(document).ready(function() {
         if (keys !== con.key) {
           // display the name of the other players in case is connected
           $(".Enemy > .card-header").text(users[keys].username);
+          $(".selections").show();
         }
         // else {
         //   $(".message").text("You the first one!");
@@ -88,35 +98,103 @@ $(document).ready(function() {
   database.ref("/connections").on("value", function(snapshot) {
     if (WhoIsConnectedisCalled) {
       var users = snapshot.val();
-      console.log(users);
+      // console.log(users);
       for (keys in users) {
         if (keys !== con.key) {
-          $(".Enemy > .card-header").text(users[keys].username);
+          EnmeyUsername = users[keys].username;
+          // check if the enemy made the selection
+          if (
+            snapshot
+              .child(keys)
+              .child("selection")
+              .exists()
+          ) {
+            EnemySelection = users[keys].selection;
+            $(".Enemy > .card-body").text(EnemySelection);
+            if (
+              snapshot
+                .child(con.key)
+                .child("selection")
+                .exists()
+            ) {
+              ShowResult();
+            }
+          }
+
+          $(".Enemy > .card-header").text(EnmeyUsername);
+          $(".selections").show();
+          // IsMySelected = true;
+          // ShowResult();
           break;
-          // once the enemy close his borwser, it will clear his card
-        } else {
-          $(".Enemy > .card-header").text("");
         }
       }
-    }
-  });
-  database.ref("/selections").on("value", function(snapshot) {
-    var Select = snapshot.val();
-    for (keys in Select) {
-      if (keys !== Username) {
-        $(".Enemy > .card-body").text(Select[keys]);
-        break;
-        // once the enemy close his borwser, it will clear his card
-      } else {
+      // once the enemy close his borwser, it will clear his card
+      if (Object.keys(users).length == 1) {
+        $(".Enemy > .card-header").text("");
+        $(".selections").hide();
         $(".Enemy > .card-body").text("");
+        $(".result").text("");
+        $(".Me > .card-body").text("");
+        database
+          .ref("/connections/" + con.key)
+          .child("selection")
+          .remove();
       }
     }
   });
+  // database.ref("/selections").on("value", function(snapshot) {
+  //   console.log("check selection?");
+  // Select = snapshot.val();
+  // // for (keys in Select) {
+  // // if (keys == EnmeyUsername) {
+  // if (EnmeyUsername in Select) {
+  //   EnemySelection = Select[EnmeyUsername];
+  //   console.log("display Enemy Card Body " + EnemySelection);
+  //   $(".Enemy > .card-body").text(EnemySelection);
+  //   // IsEnemySelected = true;
+  //   // ShowResult();
+  //   // break;
+  //   // }
+  // }
+  // });
 
-  $(window).on("unload", function() {
-    database
-      .ref("/selections")
-      .child(Username)
-      .remove();
-  });
+  function ShowResult() {
+    // console.log("IsEnemySelected: " + IsEnemySelected);
+    // if (IsMySelected) {
+    console.log("showresult");
+    if (Selection == "scissors") {
+      if (EnemySelection == "paper") {
+        $(".result").text("You Win");
+      } else if (EnemySelection == "rock") {
+        $(".result").text("You lose");
+      } else {
+        $(".result").text("Tie");
+      }
+    } else if (Selection == "rock") {
+      if (EnemySelection == "paper") {
+        $(".result").text("You lose");
+      } else if (EnemySelection == "rock") {
+        $(".result").text("Tie");
+      } else {
+        $(".result").text("You Win");
+      }
+    } else if (Selection == "paper") {
+      if (EnemySelection == "paper") {
+        $(".result").text("Tie");
+      } else if (EnemySelection == "rock") {
+        $(".result").text("You Win");
+      } else {
+        $(".result").text("You lose");
+      }
+    }
+    //   IsMySelected = false;
+    // }
+  }
+
+  // $(window).on("unload", function() {
+  //   database
+  //     .ref("/selections")
+  //     .child(Username)
+  //     .remove();
+  // });
 });
