@@ -20,6 +20,7 @@ var Username;
 $(document).ready(function() {
   $(".selections").hide();
   $(".cards").hide();
+  $(".start").hide();
   // get how many users are connected
   database.ref("/connections").once("value", function(data) {
     var users = data.val();
@@ -28,17 +29,13 @@ $(document).ready(function() {
     }
     // only 2 users allowed to connect
     if (Counter < 2) {
-      AddUser();
-      $(".Me > .card-header").text(Username);
-
-      $(".cards").show();
-      WhoIsConnected();
+      $(".start").show();
     } else {
-      alert("Sorry, Only 2 users allowed to play!");
+      $(".start").text("Sorry, Only 2 users allowed to play!");
+      $(".start").show();
     }
   });
   function AddUser() {
-    Username = prompt("Please enter your username: ");
     // connectionsRef references a specific location in our database.
     // All of our connections will be stored in this directory.
     var connectionsRef = database.ref("/connections");
@@ -194,4 +191,18 @@ $(document).ready(function() {
   //     .child(Username)
   //     .remove();
   // });
+  $("#StartBtn").on("click", function(event) {
+    event.preventDefault();
+    Username = $("#username")
+      .val()
+      .trim();
+    // if username not empty
+    if (Username !== "") {
+      AddUser();
+      $(".Me > .card-header").text(Username);
+      $(".cards").show();
+      WhoIsConnected();
+      $(".start").hide();
+    }
+  });
 });
