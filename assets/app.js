@@ -14,12 +14,9 @@ var database = firebase.database();
 var con;
 var Counter = 0;
 var WhoIsConnectedisCalled = false;
-var IsEnemySelected = false;
-var IsMySelected = false;
 var EnmeyUsername = "";
 var EnemySelection = "";
 var Username;
-var select = {};
 $(document).ready(function() {
   $(".selections").hide();
   $(".cards").hide();
