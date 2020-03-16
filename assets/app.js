@@ -18,6 +18,8 @@ var EnmeyUsername = "";
 var EnemySelection = "";
 var Username;
 var EnemyKey;
+var Myscore = 0;
+var Enemyscore;
 $(document).ready(function() {
   $(".selections").hide();
   $(".cards").hide();
@@ -52,6 +54,9 @@ $(document).ready(function() {
         con = connectionsRef.push({
           username: Username
         });
+        database.ref("/connections/" + con.key).update({
+          score: Myscore
+        });
         // Remove user from the connection list when they disconnect.
         con.onDisconnect().remove();
       }
@@ -78,7 +83,8 @@ $(document).ready(function() {
       for (keys in users) {
         if (keys !== con.key) {
           // display the name of the other players in case is connected
-          $(".Enemy > .card-header").text(users[keys].username);
+          $("#Enemyname").text(users[keys].username);
+          $("#Enemyscore").text(users[keys].score);
           $(".selections").show();
         }
         // else {
@@ -97,6 +103,7 @@ $(document).ready(function() {
       for (keys in users) {
         if (keys !== con.key) {
           EnmeyUsername = users[keys].username;
+          Enemyscore = users[keys].score;
           EnemyKey = keys;
           // check if the enemy made the selection
           if (
@@ -117,7 +124,8 @@ $(document).ready(function() {
             }
           }
 
-          $(".Enemy > .card-header").text(EnmeyUsername);
+          $("#Enemyname").text(EnmeyUsername);
+          $("#Enemyscore").text(Enemyscore);
           $(".selections").show();
           // IsMySelected = true;
           // ShowResult();
@@ -126,7 +134,7 @@ $(document).ready(function() {
       }
       // once the enemy close his borwser, it will clear his card
       if (Object.keys(users).length == 1) {
-        $(".Enemy > .card-header").text("");
+        $("#Enemyname").text("");
         $(".selections").hide();
         $(".Enemy > .card-body").text("");
         $(".modal-body > p").text("");
@@ -200,7 +208,8 @@ $(document).ready(function() {
     // if username not empty
     if (Username !== "") {
       AddUser();
-      $(".Me > .card-header").text(Username);
+      $("#Myname").text(Username);
+      $("#Myscore").text(Myscore);
       $(".cards").show();
       WhoIsConnected();
       $(".start").hide();
