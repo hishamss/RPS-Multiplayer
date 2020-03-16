@@ -1,0 +1,13 @@
+.Messages {
+  height: 200px !important;
+}
+.Messages > p {
+  border-bottom-style: dashed;
+  border-bottom-color: grey;
+  border-bottom-width: thin;
+}
+
+#TypeMessage {
+  display: inline-block !important;
+  width: 80% !important;
+}

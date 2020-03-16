@@ -132,7 +132,13 @@ $(document).ready(function() {
           $("#Enemyscore").text(Enemyscore);
           $(".selections").show();
           if (EnemyMessage) {
-            $(".Messages").text(EnmeyUsername + ": " + EnemyMessage);
+            $(".Messages").append(
+              "<h6>" + EnmeyUsername + "</h6><p>" + EnemyMessage + "</p>"
+            );
+            database
+              .ref("/connections/" + keys)
+              .child("chat")
+              .remove();
           }
 
           $(".chat").show();
@@ -257,6 +263,7 @@ $(document).ready(function() {
     event.preventDefault();
     var Message = $("#TypeMessage").val();
     if (Message !== "") {
+      $(".Messages").append("<h6>" + Username + "</h6><p>" + Message + "</p>");
       $("#TypeMessage").val("");
       // var MessageToSend = Username + ": " + Message;
       database.ref("/connections/" + con.key).update({

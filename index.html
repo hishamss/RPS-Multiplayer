@@ -33,6 +33,7 @@
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="assets/style.css"/>
     <title>RPS-Multiplayer</title>
   </head>
   <body>
@@ -114,15 +115,19 @@
           <h2>Chat</h2>
         </div>
         <div class="card-body">
-          <div class="row border-bottom">
-            <div class="col-md-12 Messages"></div>
+          <div class="row">
+            <div class="col-md-12 overflow-auto Messages"></div>
           </div>
-          <div class="row border-bottom">
+          <div class="row">
             <div class="col-md-12">
               <form>
-                <input id="TypeMessage" style="width: 100%" placeholder="Type your message here"/>
-              <button type="submit" class="btn btn-secondary" id="send">Send</button>
+                  <input class="form-control" id="TypeMessage" placeholder="Type your message here"/>
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-secondary" id="send">Send</button>
+                </span>
               </form>
+                
+              
               
             </div>
           </div>
