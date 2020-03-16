@@ -127,7 +127,7 @@ $(document).ready(function() {
         $(".Enemy > .card-header").text("");
         $(".selections").hide();
         $(".Enemy > .card-body").text("");
-        $(".result").text("");
+        $(".modal-body > p").text("");
         $(".Me > .card-body").text("");
         database
           .ref("/connections/" + con.key)
@@ -158,31 +158,30 @@ $(document).ready(function() {
     console.log("showresult");
     if (Selection == "scissors") {
       if (EnemySelection == "paper") {
-        $(".result").text("You Win");
+        $(".modal-body > p").text("You Win");
       } else if (EnemySelection == "rock") {
-        $(".result").text("You lose");
+        $(".modal-body > p").text("You lose");
       } else {
-        $(".result").text("Tie");
+        $(".modal-body > p").text("Tie");
       }
     } else if (Selection == "rock") {
       if (EnemySelection == "paper") {
-        $(".result").text("You lose");
+        $(".modal-body > p").text("You lose");
       } else if (EnemySelection == "rock") {
-        $(".result").text("Tie");
+        $(".modal-body > p").text("Tie");
       } else {
-        $(".result").text("You Win");
+        $(".modal-body > p").text("You Win");
       }
     } else if (Selection == "paper") {
       if (EnemySelection == "paper") {
-        $(".result").text("Tie");
+        $(".modal-body > p").text("Tie");
       } else if (EnemySelection == "rock") {
-        $(".result").text("You Win");
+        $(".modal-body > p").text("You Win");
       } else {
-        $(".result").text("You lose");
+        $(".modal-body > p").text("You lose");
       }
     }
-    //   IsMySelected = false;
-    // }
+    $(".result").show();
   }
 
   // $(window).on("unload", function() {
@@ -204,5 +203,10 @@ $(document).ready(function() {
       WhoIsConnected();
       $(".start").hide();
     }
+  });
+  $("#cont").on("click", function() {
+    $(".Enemy > .card-body").text("");
+    $(".Me > .card-body").text("");
+    $(".result").hide();
   });
 });
