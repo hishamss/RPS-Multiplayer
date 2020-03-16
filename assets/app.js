@@ -17,6 +17,7 @@ var WhoIsConnectedisCalled = false;
 var EnmeyUsername = "";
 var EnemySelection = "";
 var Username;
+var EnemyKey;
 $(document).ready(function() {
   $(".selections").hide();
   $(".cards").hide();
@@ -96,6 +97,7 @@ $(document).ready(function() {
       for (keys in users) {
         if (keys !== con.key) {
           EnmeyUsername = users[keys].username;
+          EnemyKey = keys;
           // check if the enemy made the selection
           if (
             snapshot
@@ -205,6 +207,15 @@ $(document).ready(function() {
     }
   });
   $("#cont").on("click", function() {
+    database
+      .ref("/connections/" + con.key)
+      .child("selection")
+      .remove();
+
+    database
+      .ref("/connections/" + EnemyKey)
+      .child("selection")
+      .remove();
     $(".Enemy > .card-body").text("");
     $(".Me > .card-body").text("");
     $(".result").hide();
