@@ -135,6 +135,7 @@ $(document).ready(function() {
             $(".Messages").append(
               "<h6>" + EnmeyUsername + "</h6><p>" + EnemyMessage + "</p>"
             );
+            $(".Messages").scrollTop(99999999999);
             database
               .ref("/connections/" + keys)
               .child("chat")
@@ -269,6 +270,8 @@ $(document).ready(function() {
       database.ref("/connections/" + con.key).update({
         chat: Message
       });
+
+      $(".Messages").scrollTop(99999999999);
     }
   });
 });
