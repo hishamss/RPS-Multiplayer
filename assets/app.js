@@ -24,6 +24,7 @@ $(document).ready(function() {
   $(".selections").hide();
   $(".cards").hide();
   $(".start").hide();
+  $(".chat").hide();
   // get how many users are connected
   database.ref("/connections").once("value", function(data) {
     var users = data.val();
@@ -86,6 +87,7 @@ $(document).ready(function() {
           $("#Enemyname").text(users[keys].username);
           $("#Enemyscore").text(users[keys].score);
           $(".selections").show();
+          $(".chat").show();
         }
         // else {
         //   $(".message").text("You the first one!");
@@ -95,6 +97,7 @@ $(document).ready(function() {
       }
     });
   }
+
   // this will detect if user joins the game while u r connected
   database.ref("/connections").on("value", function(snapshot) {
     if (WhoIsConnectedisCalled) {
@@ -104,6 +107,7 @@ $(document).ready(function() {
         if (keys !== con.key) {
           EnmeyUsername = users[keys].username;
           Enemyscore = users[keys].score;
+          EnemyMessage = users[keys].chat;
           EnemyKey = keys;
           // check if the enemy made the selection
           if (
@@ -127,6 +131,11 @@ $(document).ready(function() {
           $("#Enemyname").text(EnmeyUsername);
           $("#Enemyscore").text(Enemyscore);
           $(".selections").show();
+          if (EnemyMessage) {
+            $(".Messages").text(EnmeyUsername + ": " + EnemyMessage);
+          }
+
+          $(".chat").show();
           // IsMySelected = true;
           // ShowResult();
           break;
@@ -137,6 +146,8 @@ $(document).ready(function() {
         $("#Enemyname").text("");
         $("#Enemyscore").text("");
         $(".selections").hide();
+        $(".Messages").text("");
+        $(".chat").hide();
         $(".Enemy > .card-body").text("");
         $(".modal-body > p").text("");
         $(".Me > .card-body").text("");
@@ -241,5 +252,16 @@ $(document).ready(function() {
     $(".Enemy > .card-body").text("");
     $(".Me > .card-body").text("");
     $(".result").hide();
+  });
+  $("#send").on("click", function() {
+    event.preventDefault();
+    var Message = $("#TypeMessage").val();
+    if (Message !== "") {
+      $("#TypeMessage").val("");
+      // var MessageToSend = Username + ": " + Message;
+      database.ref("/connections/" + con.key).update({
+        chat: Message
+      });
+    }
   });
 });
