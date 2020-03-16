@@ -135,6 +135,7 @@ $(document).ready(function() {
       // once the enemy close his borwser, it will clear his card
       if (Object.keys(users).length == 1) {
         $("#Enemyname").text("");
+        $("#Enemyscore").text("");
         $(".selections").hide();
         $(".Enemy > .card-body").text("");
         $(".modal-body > p").text("");
@@ -143,6 +144,11 @@ $(document).ready(function() {
           .ref("/connections/" + con.key)
           .child("selection")
           .remove();
+        Myscore = 0;
+        $("#Myscore").text(Myscore);
+        database.ref("/connections/" + con.key).update({
+          score: Myscore
+        });
       }
     }
   });
@@ -169,6 +175,7 @@ $(document).ready(function() {
     if (Selection == "scissors") {
       if (EnemySelection == "paper") {
         $(".modal-body > p").text("You Win");
+        Myscore++;
       } else if (EnemySelection == "rock") {
         $(".modal-body > p").text("You lose");
       } else {
@@ -181,17 +188,32 @@ $(document).ready(function() {
         $(".modal-body > p").text("Tie");
       } else {
         $(".modal-body > p").text("You Win");
+        Myscore++;
       }
     } else if (Selection == "paper") {
       if (EnemySelection == "paper") {
         $(".modal-body > p").text("Tie");
       } else if (EnemySelection == "rock") {
         $(".modal-body > p").text("You Win");
+        Myscore++;
       } else {
         $(".modal-body > p").text("You lose");
       }
     }
+    database
+      .ref("/connections/" + con.key)
+      .child("selection")
+      .remove();
+
+    database
+      .ref("/connections/" + EnemyKey)
+      .child("selection")
+      .remove();
+    database.ref("/connections/" + con.key).update({
+      score: Myscore
+    });
     $(".result").show();
+    $("#Myscore").text(Myscore);
   }
 
   // $(window).on("unload", function() {
@@ -216,15 +238,6 @@ $(document).ready(function() {
     }
   });
   $("#cont").on("click", function() {
-    database
-      .ref("/connections/" + con.key)
-      .child("selection")
-      .remove();
-
-    database
-      .ref("/connections/" + EnemyKey)
-      .child("selection")
-      .remove();
     $(".Enemy > .card-body").text("");
     $(".Me > .card-body").text("");
     $(".result").hide();
