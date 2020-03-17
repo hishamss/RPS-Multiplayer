@@ -88,7 +88,7 @@ $(document).ready(function() {
         if (keys !== con.key) {
           // display the name of the other players in case is connected
           $("#Enemyname").text(users[keys].username);
-          $("#Enemyscore").text(users[keys].score);
+          $("#Enemyscore").text("Score: " + users[keys].score);
           $(".selections").show();
           $(".chat").show();
         }
@@ -132,11 +132,11 @@ $(document).ready(function() {
           }
 
           $("#Enemyname").text(EnmeyUsername);
-          $("#Enemyscore").text(Enemyscore);
+          $("#Enemyscore").text("Score: " + users[keys].score);
           $(".selections").show();
           if (EnemyMessage) {
             $(".Messages").append(
-              "<h6>" + EnmeyUsername + "</h6><p>" + EnemyMessage + "</p>"
+              "<h4>" + EnmeyUsername + ":</h4><p>" + EnemyMessage + "</p>"
             );
             // auto scrolldown
             $(".Messages").scrollTop(99999999999);
@@ -167,7 +167,7 @@ $(document).ready(function() {
           .child("selection")
           .remove();
         Myscore = 0;
-        $("#Myscore").text(Myscore);
+        $("#Myscore").text("Score: " + Myscore);
         database.ref("/connections/" + con.key).update({
           score: Myscore
         });
@@ -235,7 +235,7 @@ $(document).ready(function() {
       score: Myscore
     });
     $(".result").show();
-    $("#Myscore").text(Myscore);
+    $("#Myscore").text("Score: " + Myscore);
   }
 
   // $(window).on("unload", function() {
@@ -249,11 +249,13 @@ $(document).ready(function() {
     Username = $("#username")
       .val()
       .trim();
+    // capitlize the first letter of username
+    Username = Username.charAt(0).toUpperCase() + Username.slice(1);
     // if username not empty
     if (Username !== "") {
       AddUser();
       $("#Myname").text(Username);
-      $("#Myscore").text(Myscore);
+      $("#Myscore").text("Score: " + Myscore);
       $(".cards").show();
       WhoIsConnected();
       $(".start").hide();
@@ -268,7 +270,7 @@ $(document).ready(function() {
     event.preventDefault();
     var Message = $("#TypeMessage").val();
     if (Message !== "") {
-      $(".Messages").append("<h6>" + Username + "</h6><p>" + Message + "</p>");
+      $(".Messages").append("<h4>" + Username + ":</h4><p>" + Message + "</p>");
       $("#TypeMessage").val("");
       // var MessageToSend = Username + ": " + Message;
       database.ref("/connections/" + con.key).update({

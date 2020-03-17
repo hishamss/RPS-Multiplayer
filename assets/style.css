@@ -3,6 +3,7 @@ html {
 }
 body {
   margin: 0;
+  padding: 10px;
   height: 100%;
   font-family: "Bree Serif", serif;
 }
@@ -11,13 +12,14 @@ body {
 }
 .Messages > p {
   border-bottom-style: dashed;
-  border-bottom-color: grey;
+  border-bottom-color: #34678a;
   border-bottom-width: thin;
 }
 
 #TypeMessage {
   display: inline-block !important;
   width: 80% !important;
+  color: #ff5967;
 }
 
 #username {
@@ -32,9 +34,42 @@ body {
   font-weight: bold;
 }
 
+.card-header {
+  background-color: #d6fbf8;
+  color: #34678a;
+}
+
+#Myname {
+  float: left;
+  font-size: 2rem;
+}
+
+#Enemyname {
+  float: left;
+  font-size: 2rem;
+}
+
+#Myscore {
+  float: right;
+  font-size: 2rem;
+}
+
+#Enemyscore {
+  float: right;
+  font-size: 2rem;
+}
+
+.selection {
+  width: 80px;
+  height: 80px;
+}
 /* .start {
   background-image: url(images/bg.png);
   background-repeat: no-repeat;
 
   height: 300px;
 } */
+
+.Messages {
+  color: #ff5967;
+}
