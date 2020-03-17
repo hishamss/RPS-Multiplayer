@@ -25,6 +25,9 @@ $(document).ready(function() {
   $(".cards").hide();
   $(".start").hide();
   $(".chat").hide();
+  BodyHeight = $("body").height();
+  StartDivPos = BodyHeight * 0.5 - $(".start").height() / 2;
+  $(".start").css("margin-top", StartDivPos);
   // get how many users are connected
   database.ref("/connections").once("value", function(data) {
     var users = data.val();
@@ -135,6 +138,7 @@ $(document).ready(function() {
             $(".Messages").append(
               "<h6>" + EnmeyUsername + "</h6><p>" + EnemyMessage + "</p>"
             );
+            // auto scrolldown
             $(".Messages").scrollTop(99999999999);
             database
               .ref("/connections/" + keys)
@@ -270,8 +274,13 @@ $(document).ready(function() {
       database.ref("/connections/" + con.key).update({
         chat: Message
       });
-
+      // autoscroll down
       $(".Messages").scrollTop(99999999999);
     }
+  });
+  window.addEventListener("resize", function() {
+    BodyHeight = $("body").height();
+    StartDivPos = BodyHeight * 0.5 - $(".start").height() / 2;
+    $(".start").css("margin-top", StartDivPos);
   });
 });

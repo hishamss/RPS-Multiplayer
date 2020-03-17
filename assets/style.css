@@ -1,3 +1,11 @@
+html {
+  height: 100vh;
+}
+body {
+  margin: 0;
+  height: 100%;
+  font-family: "Bree Serif", serif;
+}
 .Messages {
   height: 200px !important;
 }
@@ -11,3 +19,22 @@
   display: inline-block !important;
   width: 80% !important;
 }
+
+#username {
+  border-radius: 0.5rem;
+  color: #34678a !important;
+  line-height: 42px;
+}
+
+#StartBtn {
+  background-color: #34678a;
+  width: 96px;
+  font-weight: bold;
+}
+
+/* .start {
+  background-image: url(images/bg.png);
+  background-repeat: no-repeat;
+
+  height: 300px;
+} */
