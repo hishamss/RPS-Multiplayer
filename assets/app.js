@@ -38,7 +38,7 @@ $(document).ready(function() {
     if (Counter < 2) {
       $(".start").show();
     } else {
-      $(".start").text("Sorry, Only 2 users allowed to play!");
+      $(".start").text("Only 2 users can play!");
       $(".start").show();
     }
   });
@@ -154,7 +154,7 @@ $(document).ready(function() {
       }
       // once the enemy close his borwser, it will clear his card
       if (Object.keys(users).length == 1) {
-        $("#Enemyname").text("");
+        $("#Enemyname").text(EnmeyUsername + ": left the game!");
         $("#Enemyscore").text("");
         $(".selections").hide();
         $(".Messages").text("");

@@ -22,10 +22,24 @@ body {
   color: #ff5967;
 }
 
+#TypeMessage::placeholder {
+  color: #ff5967;
+}
+
 #username {
   border-radius: 0.5rem;
   color: #34678a !important;
   line-height: 42px;
+}
+
+#username::placeholder {
+  color: #34678a !important;
+}
+
+#cont {
+  background-color: #34678a;
+  width: 96px;
+  font-weight: bold;
 }
 
 #StartBtn {
@@ -72,4 +86,19 @@ body {
 
 .Messages {
   color: #ff5967;
+}
+
+.Enemy .card-body {
+  font-size: 1.5rem;
+  color: #68bf60;
+}
+
+.Me .card-body {
+  font-size: 1.5rem;
+  color: #68bf60;
+}
+
+.modal-body > p {
+  font-size: 1.5rem;
+  color: #68bf60;
 }
