@@ -154,7 +154,7 @@ $(document).ready(function() {
       }
       // once the enemy close his borwser, it will clear his card
       if (Object.keys(users).length == 1) {
-        $("#Enemyname").text(EnmeyUsername + ": left the game!");
+        $("#Enemyname").text(EnmeyUsername + " left the game!");
         $("#Enemyscore").text("");
         $(".selections").hide();
         $(".Messages").text("");
