@@ -1,5 +1,7 @@
 # RPS-Multiplayer
 
+link: https://hishamss.github.io/RPS-Multiplayer/
+
 1. the user types his username then hits play to enter the game.
    ![StartGame](/assets/images/step1.jpg)
 2. The game only allows to users to play at one time. If the users tries to play while 2 users connected he will get the message below
